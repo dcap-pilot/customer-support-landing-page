@@ -176,15 +176,16 @@
             <img id="upload-icon" src="./add.png" alt="Upload Icon" width="20" style="margin-right: 10px; vertical-align: middle;">
             <span id="button-text">Pilih fail untuk dimuat naik</span>
         </a>
+        
+        <!-- Link to clear the selected files, hidden by default -->
+        <p><a href="#" id="clear-attachment-link" style="display: none;" onclick="clearFileInput()">Kosongkan pilihan</a></p>
     </div>
 
     <!-- Modal for confirmation -->
     <div id="captcha-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            
             <h5 style="font-size: 15px;">Sahkan bahawa anda bukan robot</h5>
-            
         </div>
     </div>
 
@@ -217,6 +218,7 @@
             const uploadIcon = document.getElementById('upload-icon'); // Icon element
             const buttonText = document.getElementById('button-text'); // Button text element
             const button = document.getElementById('file-upload-btn'); // Button element
+            const clearAttachmentLink = document.getElementById('clear-attachment-link'); // Clear link element
 
             if (files.length > 0) {
                 buttonText.textContent = `Muat Naik (${files.length} fail)`;  // Change button text with file count
@@ -229,12 +231,31 @@
                 button.onmouseout = function () {
                     button.style.backgroundColor = '#f2af49';  // Maintain normal color on mouse out
                 };
+                clearAttachmentLink.style.display = 'inline';  // Show the "Clear Attachment" link
                 fileSelected = true;
             } else {
                 buttonText.textContent = "Pilih fail untuk dimuat naik";  // Reset button text if no file is selected
+                clearAttachmentLink.style.display = 'none';  // Hide the "Clear Attachment" link
                 fileSelected = false;
             }
         });
+
+        // Function to clear selected files and reset button appearance
+        function clearFileInput() {
+            document.getElementById('file-input').value = '';  // Clear file input
+            const buttonText = document.getElementById('button-text'); // Button text element
+            const uploadIcon = document.getElementById('upload-icon'); // Icon element
+            const button = document.getElementById('file-upload-btn'); // Button element
+            const clearAttachmentLink = document.getElementById('clear-attachment-link'); // Clear link element
+
+            buttonText.textContent = "Pilih fail untuk dimuat naik";  // Reset button text
+            uploadIcon.src = './add.png';  // Reset icon to add.png
+            button.style.backgroundColor = 'white';  // Reset button color
+            button.style.color = 'black';  // Reset text color
+
+            clearAttachmentLink.style.display = 'none';  // Hide the "Clear Attachment" link
+            fileSelected = false;  // Reset file selected state
+        }
 
         // Automatically convert alphabet input to uppercase in the vehicle number field
         document.getElementById('vehicle-number').addEventListener('input', function () {
