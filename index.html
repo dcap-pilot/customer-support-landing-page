@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCAP Customer Support - Welcome</title>
+    <link href="./app.min.css" rel="stylesheet">
+    <style>
+        .landing-container {
+            text-align: center;
+        }
+
+        .landing-title {
+            font-size: 35px;
+            color: rgb(0, 0, 0);
+            margin-bottom: 0px;
+        }
+
+        .landing-container img {
+            margin-top: 0;
+            margin-bottom: 0px;
+        }
+
+        .landing-container .description {
+            font-size: 16px;
+            color: rgb(0, 0, 0);
+            margin-bottom: 5px;
+            margin-top: -30px;
+        }
+
+        .input-field {
+            display: block;
+            width: 350px;
+            padding: 14px;
+            margin: 10px auto;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Change border color of input when focused */
+        .input-field:focus {
+            outline: none;
+            border-color: rgb(94, 148, 252);
+        }
+
+        /* Style only the placeholder text */
+        .input-field::placeholder {
+            font-style: italic;
+            font-weight: normal;
+            text-transform: none;
+        }
+
+        /* Style for the submit button */
+        .submit-button {
+            display: block;
+            width: 350px;
+            padding: 14px;
+            margin: 10px auto;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgb(31, 107, 255);
+            border: 1px solid rgb(31, 107, 255);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* Change border color of button when focused */
+        .submit-button:focus {
+            outline: none;
+            border-color: rgb(94, 148, 252);
+        }
+
+        .welcome-text {
+            font-size: 20px;
+            font-weight: 350;
+            color: rgb(0, 0, 0);
+            margin-bottom: 5px;
+        }
+
+        .card-header-2 {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+        }
+
+        /* Mobile responsiveness adjustments */
+        @media (max-width: 600px) {
+            .landing-container {
+                margin-top: 5%;
+            }
+
+            .landing-title {
+                font-size: 28px;
+            }
+
+            .welcome-text {
+                font-size: 18px;
+            }
+
+            .description {
+                font-size: 14px;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .input-field,
+            .submit-button {
+                width: 90%;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: rgb(31, 107, 255);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<div class="card-header-2 font-weight-600 d-flex align-items-center">
+    <div class="mr-auto"><img src="./Logo_DCAP_Primary.jpg" alt="" width="70"></div>
+</div>
+
+<header>
+    <div class="container">
+    </div>
+</header>
+
+<body>
+    <div class="landing-container">
+        <h5 class="welcome-text">Selamat datang ke</h5>
+        <h1 class="landing-title">Khidmat Pelanggan</h1>
+        <img src="./Customer Support.gif" alt="" width="350">
+
+        <p class="description">Sila isikan maklumat anda untuk teruskan</p>
+
+        
+        <!-- No spaces allowed in the input for No. Plat Kenderaan -->
+        <input type="text" id="plateNumber" placeholder="No. Plat Kenderaan (Contoh : ABC1234)" class="input-field" oninput="this.value = this.value.replace(/\s/g, '')">       
+        
+        <!-- Only allows numbers, maximum 4 digits -->
+        <input type="number" id="lastFourNRIC" placeholder="4 Digit Terakhir Nombor IC (Contoh : 1234)" class="input-field" oninput="this.value = this.value.slice(0, 4)">
+        
+        <!-- Hantar button -->
+        <button class="submit-button" onclick="validateInfo()">Hantar</button>
+    </div>
+
+    <!-- Modal for OTP entry -->
+    <div class="modal" id="otpModal">
+        <div class="modal-content">
+            <h5>Masukkan OTP</h5>
+            <p>Sila masukkan kod OTP yang dihantar ke WhatsApp anda.</p>
+            <input type="text" placeholder="Masukkan OTP" class="input-field" maxlength="6">
+            <button class="close-button" onclick="closeModal()">Hantar OTP</button>
+        </div>
+    </div>
+
+    <!-- Warning modal for incorrect information -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <h5>Maklumat Tidak Tepat</h5>
+            <p>Maklumat yang dimasukkan tidak tepat, sila masukkan maklumat yang betul.</p>
+            <button class="close-button" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        function validateInfo() {
+            const plateNumber = document.getElementById("plateNumber").value;
+            const lastFourNRIC = document.getElementById("lastFourNRIC").value;
+            
+            // Placeholder validation logic
+            if (plateNumber === "ABC1234" && lastFourNRIC === "1234") {
+                openModal("otpModal");
+            } else {
+                openModal("errorModal");
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        function closeModal() {
+            document.querySelectorAll(".modal").forEach(modal => modal.style.display = "none");
+        }
+    </script>
+</body>
+</html>
